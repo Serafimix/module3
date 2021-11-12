@@ -5,6 +5,7 @@ import entities.Medication;
 import entities.Patient;
 import entities.Recipe;
 import entities.enumerations.DoctorProfession;
+import entities.enumerations.DoctorStatus;
 import entities.enumerations.MedicationType;
 import entities.enumerations.PatientStatus;
 import services.DoctorServices;
@@ -15,6 +16,7 @@ import services.RecipeServices;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -43,6 +45,10 @@ public class HospController {
                      write 4  if you want to see all Doctors
                      write 5  if you want to see all Patients
                      write 6  if you want to see all Medications
+                     write 7  if you want invite new Doctor in the Hospital
+                     write 8  if you want discharge a patient
+                     write 9  if you want change status of the Doctor
+                     write 10  if patient is dead and get him to the pathologist
                      write 0  if you want to finish
                      ***************************************
                     """);
@@ -61,6 +67,10 @@ public class HospController {
                 case "4" -> doctorServices.readAllDoctorsInfo();
                 case "5" -> patientServices.readAllPatients();
                 case "6" -> medicationsServices.readAllMedicationInfo();
+                case "7" -> inviteNewDoctor();
+                case "8" -> dischargeAPatient();
+                case "9" -> changeStatusOfTheDoctor();
+                case "10" -> deadlineOfPatient();
                 case "0" -> System.out.println("Thank you, bye");
                 default -> System.out.println("Something wrong, please try again");
             }
@@ -104,6 +114,136 @@ public class HospController {
             }
             System.out.println("\n");
         }
+    }
+
+    private void deadlineOfPatient() {
+        System.out.println("Please, enter ID Patient who is dead:\n");
+        patientServices.readAllPatients();
+        int idPat = 0;
+        try {
+            idPat = Integer.parseInt(bufferedReader.readLine());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Patient patient = patientServices.getPatientFromId(idPat);
+        if (patient != null) {
+            if (patient.getStatus() == PatientStatus.DEAD) {
+                System.out.println("I'm so sorry, but this patient is already dead...");
+            } else {
+                patient.setStatus(PatientStatus.DEAD);
+                patient.setRecipe(null);
+                patient.getDoctors().clear();
+                patient.setDoctors(doctorServices.getAllPathologist());
+                patient.setCheck_out_date(LocalDate.now());
+                System.out.println("Patient with ID " + idPat + " is dead...\n");
+                patientServices.updatePatient(patient);
+            }
+        } else {
+            System.out.println("Patient with this ID is not found");
+        }
+
+    }
+
+    private void changeStatusOfTheDoctor() {
+        System.out.println("Please, enter ID Doctor, who status is changed:\n");
+        doctorServices.readAllDoctorsInfo();
+        int idDoc = 0;
+        String title = "";
+        try {
+            idDoc = Integer.parseInt(bufferedReader.readLine());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Doctor doctor = doctorServices.getDoctorById(idDoc);
+        if (doctor != null) {
+            System.out.println("With status of this doctor now? Chose number from the list\n");
+            System.out.println("""
+                    *******************************************
+                    "1": SICK
+                    "2": HOME
+                    "3": ON_OPERATION
+                    default = free.
+                    *******************************************
+                        """);
+            try {
+                title = bufferedReader.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            switch (title) {
+                case "1" -> doctor.setStatus(DoctorStatus.SICK);
+                case "2" -> doctor.setStatus(DoctorStatus.HOME);
+                case "3" -> doctor.setStatus(DoctorStatus.ON_OPERATION);
+                default -> doctor.setStatus(DoctorStatus.FREE);
+            }
+            System.out.println("Doctor status is changed for " + doctor.getStatus());
+            doctorServices.updateDoctorInfo(doctor);
+        } else {
+            System.out.println("Sorry, but doctor with this ID is not found...");
+        }
+    }
+
+    private void dischargeAPatient() {
+        System.out.println("Please, enter ID patient, who is healthy.");
+        patientServices.readAllPatients();
+        int idPat = 0;
+        try {
+            idPat = Integer.parseInt(bufferedReader.readLine());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Patient patient = patientServices.getPatientFromId(idPat);
+        if (patient != null) {
+            if (patient.getStatus() == PatientStatus.DEAD) {
+                System.out.println("I'm so sorry, but this patient is dead...");
+            } else {
+                patient.setStatus(PatientStatus.HEALTHY);
+                patient.setRecipe(null);
+                patient.getDoctors().clear();
+                patient.setCheck_out_date(LocalDate.now());
+                System.out.println("Patient with ID " + idPat + " is healthy, good luck, bye. <3");
+                patientServices.updatePatient(patient);
+            }
+        } else {
+            System.out.println("Patient with this ID is not found");
+        }
+
+    }
+
+    private void inviteNewDoctor() {
+        Doctor doctor = new Doctor();
+        System.out.println("Write a last name of the doctor");
+        String title = "";
+        try {
+            title = bufferedReader.readLine();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        doctor.setLast_name(title);
+        System.out.println("What his profession, chose from the list: ");
+        System.out.println("""
+                *******************************************
+                "1": THERAPIST
+                "2": CARDIOLOGIST
+                "3": SURGEON
+                "4": INFECTIONIST
+                *******************************************
+                """);
+        int prof = 0;
+        try {
+            prof = Integer.parseInt(bufferedReader.readLine());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        switch (prof) {
+            case 1 -> doctor.setProfession(DoctorProfession.THERAPIST);
+            case 2 -> doctor.setProfession(DoctorProfession.CARDIOLOGIST);
+            case 3 -> doctor.setProfession(DoctorProfession.SURGEON);
+            case 4 -> doctor.setProfession(DoctorProfession.INFECTIONIST);
+            default -> doctor.setProfession(DoctorProfession.INTERN);
+        }
+        System.out.println("Welcome to the work, mr. " + doctor.getLast_name());
+        doctorServices.saveDoctor(doctor);
     }
 
     private void createMedication() {
@@ -158,21 +298,21 @@ public class HospController {
     }
 
     private Patient addNewPatient() {
-        System.out.println("\nPlease enter you first name:");
+        System.out.println("\nPlease enter the first name of the new patient:");
         String firstName = null;
         try {
             firstName = bufferedReader.readLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("\nEnter your last name:");
+        System.out.println("\nEnter his last name:");
         String lastName = null;
         try {
             lastName = bufferedReader.readLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("\nPlease, chose you doctor number ID:\n");
+        System.out.println("\nPlease, chose his doctor number ID:\n");
         doctorServices.readAllDoctorsInfo();
         String address = null;
         // if Doctors not found, all go to the Doctor House.
@@ -198,7 +338,7 @@ public class HospController {
         doctors.add(new Doctor("House", DoctorProfession.THERAPIST));
         doctors.add(new Doctor("Burceva", DoctorProfession.CARDIOLOGIST));
         doctors.add(new Doctor("Saw", DoctorProfession.SURGEON));
-        doctors.add(new Doctor("Plague Man", DoctorProfession.INFECTIONIS));
+        doctors.add(new Doctor("Plague Man", DoctorProfession.INFECTIONIST));
         doctors.add(new Doctor("Cannibal", DoctorProfession.PATHOLOGIST));
         doctors.forEach(x -> doctorServices.saveDoctor(x));
 

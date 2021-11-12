@@ -37,12 +37,12 @@ public class Patient {
 
     @Override
     public String toString() {
-        return "Patient{" +
-                "first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
+        return "PatientID# " + id +
+                ". First name='" + first_name + '\'' +
+                ", last name='" + last_name + '\'' +
                 ", status=" + status +
-                ", arrival_date=" + arrival_date +
-                ", check_out_date=" + check_out_date +
+                ", arrival date=" + arrival_date +
+                ", check out_date=" + check_out_date +
                 ", doctors=" + doctors +
                 '}';
     }

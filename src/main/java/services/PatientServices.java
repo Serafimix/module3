@@ -36,6 +36,9 @@ public class PatientServices {
         patientDao.updateInstance(patient);
     }
 
+    public Patient getPatientFromId(int id){
+        return patientDao.getInstanceById(id);
+    }
 
     public void readRecipeFromPatient(Patient patient) {
         patientDao.readRecipeFromPatient(patient);

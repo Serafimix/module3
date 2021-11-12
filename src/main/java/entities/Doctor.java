@@ -32,4 +32,13 @@ public class Doctor {
         this.last_name = last_name;
         this.profession = profession;
     }
+
+    @Override
+    public String toString() {
+        return "Doctor " +
+                "last name is'" + last_name + '\'' +
+                ", profession=" + profession +
+                ", status=" + status +
+                '}';
+    }
 }
