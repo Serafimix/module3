@@ -1,0 +1,33 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+
+        <property name="connection.driver_class">org.postgresql.Driver</property>
+        <property name="connection.url">
+            jdbc:postgresql://ec2-3-229-166-245.compute-1.amazonaws.com:5432/d9679ngl0ofn7u
+        </property>
+        <property name="connection.username">aobswctlqieojl</property>
+        <property name="connection.password">4ee3491e6ff3d5b20fbb167b285ffb8cd173d89b0bae0daa702d9b5e28081f2b</property>
+        <property name="connection.pool_size">1</property>
+        <property name="dialect">org.hibernate.dialect.PostgresPlusDialect</property>
+        <property name="show_sql">false</property>
+        <property name="current_session_context_class">thread</property>
+        <property name="hbm2ddl.auto">create-drop</property>
+        <property name="hibernate.dbcp.initialSize">5</property>
+        <property name="hibernate.dbcp.maxTotal">20</property>
+        <property name="hibernate.dbcp.maxIdle">10</property>
+        <property name="hibernate.dbcp.minIdle">5</property>
+        <property name="hibernate.dbcp.maxWaitMillis">-1</property>
+        <property name="hibernate.jdbc.batch_size">50</property>
+
+        <mapping class="entities.Doctor"/>
+        <mapping class="entities.Medication"/>
+        <mapping class="entities.Patient"/>
+        <mapping class="entities.Recipe"/>
+
+
+    </session-factory>
+</hibernate-configuration>
