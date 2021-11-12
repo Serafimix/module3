@@ -78,7 +78,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>MusicManagerAPI</mainClass>
+                            <mainClass>HospManagerAPI</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
