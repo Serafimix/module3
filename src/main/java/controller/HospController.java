@@ -48,7 +48,7 @@ public class HospController {
                      write 7  if you want invite new Doctor in the Hospital
                      write 8  if you want discharge a patient
                      write 9  if you want change status of the Doctor
-                     write 10  if patient is dead and get him to the pathologist
+                     write 10 if patient is dead and get him to the pathologist
                      write 0  if you want to finish
                      ***************************************
                     """);
@@ -287,11 +287,6 @@ public class HospController {
         medicationsServices.saveMedical(medication);
         System.out.println("Medication is saved" + medication);
     }
-
-    private List<Medication> getAllMedication() {
-        return medicationsServices.getAllMedication();
-    }
-
 
     private void readRecipeFromPatient(Patient patient) {
         patientServices.readRecipeFromPatient(patient);

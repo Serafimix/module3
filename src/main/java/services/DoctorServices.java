@@ -44,7 +44,6 @@ public class DoctorServices {
         for (var d : doctors) {
             System.out.println("ID: " + d.getId() + ". M.D.: " + d.getLast_name() + ". Profession: "
                     + d.getProfession() + ". Status is " + d.getStatus());
-            d.getPatients().forEach(System.out::println);
         }
     }
 

@@ -4,6 +4,7 @@ import entities.enumerations.DoctorProfession;
 import entities.enumerations.DoctorStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class Doctor {
     private DoctorStatus status = DoctorStatus.FREE;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @JoinTable(name="doctor_patients", joinColumns = @JoinColumn(name = "doctor_id"), inverseJoinColumns = @JoinColumn(name = "patient_id"))
 //    @ToString.Exclude
     private List<Patient> patients = new ArrayList<>();
 

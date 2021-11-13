@@ -3,6 +3,7 @@ package entities;
 import entities.enumerations.PatientStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -28,6 +29,8 @@ public class Patient {
     @ManyToOne(cascade = CascadeType.ALL)
     private Recipe recipe;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @JoinTable(name="doctor_patients", joinColumns=@JoinColumn(name = "patient_id"), inverseJoinColumns=@JoinColumn(name="doctor_id"))
+//    @ToString.Exclude
     private List<Doctor> doctors = new ArrayList<>();
 
     public Patient(String first_name, String last_name) {
