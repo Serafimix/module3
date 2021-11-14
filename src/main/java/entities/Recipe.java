@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
+@Table(name = "recipe")
 public class Recipe {
 
     @Id

@@ -13,6 +13,7 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
+@Table(name = "patient")
 public class Patient {
 
     @Id

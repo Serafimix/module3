@@ -3,6 +3,7 @@ package entities;
 import entities.enumerations.DoctorProfession;
 import entities.enumerations.DoctorStatus;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
+@Table(name = "doctor")
 public class Doctor {
 
     @Id
