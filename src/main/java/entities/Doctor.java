@@ -27,7 +27,7 @@ public class Doctor {
     @Enumerated(EnumType.STRING)
     private DoctorStatus status = DoctorStatus.FREE;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 //    @JoinTable(name="doctor_patients", joinColumns = @JoinColumn(name = "doctor_id"), inverseJoinColumns = @JoinColumn(name = "patient_id"))
 //    @ToString.Exclude
     private List<Patient> patients = new ArrayList<>();

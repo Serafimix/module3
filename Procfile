@@ -1,1 +1,1 @@
-web: java -jar target/hospManager-1.0-SNAPSHOT-jar-with-dependencies.jar
+bash: java -jar target/hospManager-1.0-SNAPSHOT-jar-with-dependencies.jar
